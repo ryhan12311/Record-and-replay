@@ -1,0 +1,52 @@
+import tkinter as tk
+import threading
+import mouse
+import keyboard
+def Record():
+    global mouse_events
+    global keyboard_events
+    
+    mouse_events = []
+    keyboard_events = []
+    mouse.hook(mouse_events.append)
+    keyboard.start_recording()
+    print("Recording")
+    if keyboard.wait("Esc")!=False:
+        mouse.unhook(mouse_events.append)
+        keyboard_events = keyboard.stop_recording()
+        print("Stop")
+        #prinsprinted")
+    #return recorded
+    #keyboard.play(recorded)
+def Play():
+
+    #keyboard.play(recorded)
+    k_thread = threading.Thread(target = lambda :keyboard.play(keyboard_events))
+    k_thread.start()
+    
+    m_thread = threading.Thread(target = lambda :mouse.play(mouse_events))
+    m_thread.start()    
+    
+    
+    k_thread.join() 
+    m_thread.join()
+    
+    
+    
+
+
+
+
+if __name__ == "__main__":
+    root =tk.Tk()
+    root.title("Recordd")
+    b1=tk.Button(root, text="Record",command=Record)
+    b1.pack()
+    
+    b2=tk.Button(root, text="Play",command=Play)
+    b2.pack()
+    b1.focus_set()
+
+
+
+    root.mainloop
